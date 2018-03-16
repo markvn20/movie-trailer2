@@ -27,9 +27,14 @@ function apiCall(api, api2) {
 							 	$.ajax({
 					                url: 'https://api.themoviedb.org/3/movie/'+id+'/videos?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US',
 					                success: function(data2) {
+					                	var resultsKey = data2.results.length;
 					               		console.log(data2)
-					               		
-					                	
+					                	for(var j = 0; j < resultsKey; j++) {
+					                		if(data2.results[j].type = 'trailer') {
+					                			return data2.results[j].type = 'trailer';
+					                		}
+					                		
+					                	}
 					                }
 					            });
 					        }	
