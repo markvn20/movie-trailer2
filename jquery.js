@@ -39,23 +39,34 @@ function apiCall(api, api2) {
 	                success: function(data2) {
 	                	var resultsKey = data2.results.length;
 	                	var results2Array = data2.results;
-	                	var z = -1;
-	                	var v = 0;
-	                	for (var prop in results2Array) {
-						    results2Array[prop] = 'teaser';
-						    console.log(results2Array[prop])
+
+	                	var getTrailer = results2Array.filter(function(e) {
+							return e.type == "Trailer";
+						});
+
+						var trailerLength = getTrailer.length;
+						for(var i = 0; i < trailerLength; i++) {
+							var trailerKey = getTrailer[i].key;
+							console.log(trailerKey)
+							$('.button').append('<span class="trailer-button">'+trailerKey+'</span>')
 						}
-					  	console.log(v)
-	                	$('iframe').attr('src',  'https://www.youtube.com/embed/' + get_movieKey);
+
+	                	
 	                }
 	            });
 	        }	
            	$(document).on('click', 'div.asdf', function() {
 				var get_movieKey = $(this).attr("data");
 				var get_movieID = $(this).attr('movieId');
+
 				test(get_movieID);
 				test2(get_movieID);
 				
+			})
+			$(document).on('click', 'div.asdf', function() {
+				var key = $(this).html();
+				$('iframe').attr('src', 'https://www.youtube.com/embed/' + key);
+				console.log(key)
 			})
 
         }
