@@ -1,0 +1,154 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+    font-family: 'Montserrat', sans-serif;
+
+
+}
+
+
+/*			HEADER/NAV			*/
+header {
+	position: relative;
+	width: 100%;
+	height: 100px;
+	line-height: 100px;
+}
+
+.logo, nav, .search-container {
+	float: left;
+	height: 100%;
+}
+
+.logo {
+	width: 10%;
+	background: #111;
+}
+
+nav {
+	width: 60%;
+	background: #222;
+}
+
+nav ul li {
+	color: white;
+	list-style-type: none;
+	float: left;
+	width: 25%;
+	text-align: center;
+}
+
+.search-container {
+	background: #345;
+	width: 30%;
+}
+
+
+
+/*			Container			*/
+.container {
+	clear: both;
+}
+
+
+/*			 Main.html			*/
+/*		section		*/
+section{
+	
+}
+
+.section1, 
+.section2, 
+.section3 {
+	float: left;
+	width: 33.333%;
+}
+
+.section1 {
+	background: #345;
+}
+
+.section2{
+	background: #222;
+}
+
+.section3 {
+	background: #111;
+}
+
+/*		main		*/
+main {
+	background: #111;
+	clear: both;
+}
+
+.main-all {
+	padding: 30px 0;
+	position: relative;
+	clear: both;
+}
+
+.main-all .max-width {
+	position: relative;
+	width: 80%;
+	height: 100px;
+	margin: 0 auto;
+}
+
+.main-all .asdf {
+	float: left;
+	width: 20%;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	-moz-background-size: 100% 100%;
+	background-size: 100% 100%;
+	padding: 30% 0 0;
+}
+
+.section1 .asdf, .section2 .asdf,.section3 .asdf {
+	background-size: 100% 100%;
+	padding: 130% 0 0;
+}
+
+.main-all h1 {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 50%;
+	font-size: 2em;
+	color: white;
+}
+
+.main-all span {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 50%;
+	text-align: right;
+	font-size: 1.5em;
+	color: white;
+}
+
+.main-1, .main-2, .main-3, .main-4 {
+	
+} 
+
+
+

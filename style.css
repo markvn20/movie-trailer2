@@ -1,0 +1,186 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+    font-family: 'Montserrat', sans-serif;
+
+
+}
+
+
+/*			HEADER/NAV			*/
+header {
+	position: fixed;
+	width: 100%;
+	height: 80;
+	line-height: 80px;
+	z-index: 5;
+	background-color: rgba(17, 17, 17, .4);
+	transition: all .4s ease-in-out;
+}
+
+.header-fade {
+	background-color: rgba(17, 17, 17, 1);
+}
+
+.logo, nav, .search-container {
+	float: left;
+	height: 100%;
+}
+
+.logo {
+	width: 10%;
+	
+}
+
+nav {
+	width: 60%;
+	
+}
+
+nav ul li {
+	color: white;
+	list-style-type: none;
+	float: left;
+	width: 25%;
+	text-align: center;
+	font-size: 
+}
+
+.search-container {
+	
+	width: 30%;
+}
+
+
+
+/*			Container			*/
+.container {
+	clear: both;
+	position: relative;
+}
+
+.container-active {
+	top: 80px;
+}
+
+/*			 Main.html			*/
+/*		section		*/
+section{
+	
+}
+
+.section1, 
+.section2, 
+.section3 {
+	float: left;
+	width: 100%;
+}
+
+.section1 {
+	
+	position: relative;
+	
+}
+
+.section2{
+	
+}
+
+.section3 {
+	
+}
+
+/*		main		*/
+main {
+	background: #111;
+	clear: both;
+}
+
+.main-all {
+	padding: 30px 0;
+	position: relative;
+	clear: both;
+	width: 90%;
+	margin: 0 auto;
+}
+
+.main-all .max-width {
+	position: relative;
+	width: 80%;
+	height: 100px;
+	margin: 0 auto;
+}
+
+.main-all .movie-box {
+	transition: all .2s linear;
+	display: inline-block;
+	width: 20%;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	-moz-background-size: 100% 100%;
+	background-size: 100% 100%;
+	padding: 30% 0 0;
+	position: relative;
+}
+
+.section1 .movie-box, .section2 .movie-box,.section3 .movie-box {
+	background-size: 100% 100%;
+	padding: 45% 0 0;
+}
+
+.movie-box2 {
+	background-size: 100% 100%;
+	
+}
+
+.main-all h1 {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 50%;
+	font-size: 2em;
+	color: white;
+}
+
+.main-all .show-more {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 50%;
+	text-align: right;
+	font-size: 1.5em;
+	color: white;
+}
+
+.main-1, .main-2, .main-3, .main-4 {
+	
+} 
+
+.slider-container {
+	white-space: nowrap;
+	position: relative;
+	left: 0;
+}
+
+.left-all, .right-all {
+	color: white;
+}
+
+
