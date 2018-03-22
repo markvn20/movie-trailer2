@@ -27,7 +27,7 @@ function apiCall(api, api2, arg) {
 				};
 
 				var okay = data.results[i].id;
-				$('.' + api2).append('<div class="movie-box" style="background-image: url(https://image.tmdb.org/t/p/w500/'+image+')" movieId="'+movieId+'"></div>')
+				$('.' + api2).append('<div class="movie-box" okay="'+i+'" style="background-image: url(https://image.tmdb.org/t/p/w500/'+image+')" movieId="'+movieId+'"></div>')
 			
 			}
 
@@ -36,9 +36,8 @@ function apiCall(api, api2, arg) {
 	                url: 'https://api.themoviedb.org/3/movie/'+par1+'?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&page=1',
 	                async: true,
 	                success: function (data) {
-	                	var results2Id = data.id;
-	                	
-	                	
+	                	var results2Id = data;
+	                	$('.works').html(data.overview)
                 	}
 	            });
 	        }
@@ -54,7 +53,7 @@ function apiCall(api, api2, arg) {
 	                	var getTrailer = results2Array.filter(function(e) {
 							return e.type == "Trailer";
 						});
-	                	console.log(getTrailer)
+	                	
 						var trailerLength = getTrailer.length;
 						for(var i = 0; i < trailerLength; i++) {
 							var trailerKey = getTrailer[i].key;
@@ -65,11 +64,27 @@ function apiCall(api, api2, arg) {
 	                	
 	                }
 	            });
-	        }	
+	        }
+	        function getHTML2() {
+				$.ajax({
+			      	url: 'current-trailer.html',
+			      	type: 'GET',
+			      	async: true,
+			      	dataType: 'html',
+			      	success: function(result){
+			      		$('.container').css({'top': '100px;'});
+			      		$('.container').empty();
+			        	$(".container").html(result);
+			        	
+			      	}
+			   	});
+			}	
 
            	$(document).on('click', 'div.movie-box', function() {
+           		$('.container').empty()
 				var get_movieKey = $(this).attr("data");
 				var get_movieID = $(this).attr('movieId');
+				getHTML2()
 				test(get_movieID);
 				test2(get_movieID);
 				
@@ -78,13 +93,13 @@ function apiCall(api, api2, arg) {
 			$(document).on('click', '.trailer-button', function() {
 				var key = $(this).html();
 				$('iframe').attr('src', 'https://www.youtube.com/embed/' + key);
-				console.log(key)
+				
 			})
 
-			var movieBoxLength	= $('.main-1 .movie-box').length;
+			/*var movieBoxLength	= $('.main-1 .movie-box').length;
 			var slideAmount 	= Math.floor(movieBoxLength/5);
 			var slidePartial 	= movieBoxLength % 5;
-			console.log(slidePartial)
+			console.log(slidePartial)*/
 			
         }
     });
@@ -92,32 +107,36 @@ function apiCall(api, api2, arg) {
 }
 
 
-
+var z = 0;
+var q = 0;
 $(document).on('click', '.left-arrow1',function() {
-	$('.movie-box').animate({
-		left: '-=100%',
-	})
+	z++
+	q += 500;
+	$('.slider-container1 .movie-box').css('transform','translateX(-500%)');
+	
+		
 	$('.slider-container1 .movie-box:last-child').after($('.slider-container1 .movie-box:first-child'))
-	$('.slider-container1 .movie-box:last-child').after($('.slider-container1 .movie-box:nth-child(1)'))
-	$('.slider-container1 .movie-box:last-child').after($('.slider-container1 .movie-box:nth-child(2)'))
-
-	$('.slider-container1 .movie-box:last-child').after($('.slider-container1 .movie-box:nth-child(3)'))
-	$('.slider-container1 .movie-box:last-child').after($('.slider-container1 .movie-box:nth-child(4)'))
+	$('.slider-container1 .movie-box:last-child').after($('.slider-container1 .movie-box:nth-child(1), .slider-container1 .movie-box:nth-child(2), .slider-container1 .movie-box:nth-child(3), .slider-container1 .movie-box:nth-child(4)'))
+	
+	
 })
 
 $(document).on('click', '.right-arrow1',function() {
-	$('.slider-container1').animate({
-		left: '+=100%',
-	})
+	$('.movie-box').css('transform','translateX(-500%)');
+	
+		$('.slider-container1 .movie-box:first-child').before($('.slider-container1 .movie-box:last-child'))
+		$('.slider-container1 .movie-box:first-child').before($('.slider-container1 .movie-box:nth-child(20), .slider-container1 .movie-box:nth-child(19), .slider-container1 .movie-box:nth-child(18), .slider-container1 .movie-box:nth-child(17)'))
+
 
 })
 
 $(document).on('click', 'div.movie-box', function() {
-	getHTML2()
+	
 	$('.container').addClass('container-active ')
 })
 
 $(document).on('click', '.back', function() {
+	$('.container').empty()
 	getHTML3()
 	$('.container').removeClass('container-active ')
 })
@@ -131,28 +150,13 @@ function getHTML() {
       	async: true,
       	dataType: 'html',
       	success: function(result){
+      		$('.container').empty()
         	$(".container").html(result);
       	}
    	});
 
 }
-function getHTML2() {
-	$.ajax({
-      	url: 'current-trailer.html',
-      	type: 'GET',
-      	async: true,
-      	dataType: 'html',
-      	success: function(result){
-      		$('.container').css({'top': '100px;'});
-        	$(".container").html(result);
-        	apiCall('now_playing', 'slider-container1')
-			apiCall('popular', 'slider-container2' )
-			apiCall('top_rated', 'slider-container3')
-			apiCall('upcoming', 'slider-container4', '.section1')
-      	}
-   	});
 
-}
 function getHTML3() {
 	$.ajax({
       	url: 'main.html',
@@ -174,7 +178,6 @@ getHTML3()
   
 $(document).on('scroll', function() {
     var currentScrollTop = $(this).scrollTop();
-    console.log(currentScrollTop)
    	if(currentScrollTop > 0) {
    		$('header').addClass('header-fade')
    	}
