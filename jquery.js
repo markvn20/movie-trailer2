@@ -31,71 +31,7 @@ function apiCall(api, api2, arg) {
 			
 			}
 
-			function test(par1) {
-			 	$.ajax({
-	                url: 'https://api.themoviedb.org/3/movie/'+par1+'?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&page=1',
-	                async: true,
-	                success: function (data) {
-	                	var results2Id = data;
-	                	$('.works').html(data.overview)
-                	}
-	            });
-	        }
-		     
-			function test2(id) {
-			 	$.ajax({
-	                url: 'https://api.themoviedb.org/3/movie/'+id+'/videos?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US',
-	                async: true,
-	                success: function(data2) {
-	                	var resultsKey = data2.results.length;
-	                	var results2Array = data2.results;
-
-	                	var getTrailer = results2Array.filter(function(e) {
-							return e.type == "Trailer";
-						});
-	                	
-						var trailerLength = getTrailer.length;
-						for(var i = 0; i < trailerLength; i++) {
-							var trailerKey = getTrailer[i].key;
-							
-							$('.movie-box').append('<span class="trailer-button">'+trailerKey+'</span>')
-						}
-
-	                	
-	                }
-	            });
-	        }
-	        function getHTML2() {
-				$.ajax({
-			      	url: 'current-trailer.html',
-			      	type: 'GET',
-			      	async: true,
-			      	dataType: 'html',
-			      	success: function(result){
-			      		$('.container').css({'top': '100px;'});
-			      		$('.container').empty();
-			        	$(".container").html(result);
-			        	
-			      	}
-			   	});
-			}	
-
-           	$(document).on('click', 'div.movie-box', function() {
-           		$('.container').empty()
-				var get_movieKey = $(this).attr("data");
-				var get_movieID = $(this).attr('movieId');
-				getHTML2()
-				test(get_movieID);
-				test2(get_movieID);
-				
-			})
-
-			$(document).on('click', '.trailer-button', function() {
-				var key = $(this).html();
-				$('iframe').attr('src', 'https://www.youtube.com/embed/' + key);
-				
-			})
-
+			
 			/*var movieBoxLength	= $('.main-1 .movie-box').length;
 			var slideAmount 	= Math.floor(movieBoxLength/5);
 			var slidePartial 	= movieBoxLength % 5;
@@ -105,6 +41,73 @@ function apiCall(api, api2, arg) {
     });
    
 }
+
+function test(par1) {
+ 	$.ajax({
+        url: 'https://api.themoviedb.org/3/movie/'+par1+'?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&page=1',
+        async: true,
+        success: function (data) {
+        	var results2Id = data;
+        	$('.works').html(data.overview)
+    	}
+    });
+}
+ 
+function test2(id) {
+ 	$.ajax({
+        url: 'https://api.themoviedb.org/3/movie/'+id+'/videos?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US',
+        async: true,
+        success: function(data2) {
+        	var resultsKey 		= data2.results.length;
+        	var results2Array 	= data2.results;
+        	var getTrailer 		= results2Array.filter(function(e) {
+				return e.type == "Trailer";
+			});
+        	var mainTrailer 	= getTrailer[0].key
+			var trailerLength = getTrailer.length;
+
+			for(var i = 0; i < trailerLength; i++) {
+				var trailerKey = getTrailer[i].key;
+				$('.movie-box').append('<span class="trailer-button">'+trailerKey+'</span>')
+			}
+
+			$('.movie-iframe').attr('src', 'https://www.youtube.com/embed/' + mainTrailer + '?autoplay=1&rel=0&amp;controls=0&amp;showinfo=0');
+        	
+        }
+    });
+}
+
+function getHTML2(movieKey) {
+	$.ajax({
+      	url: 'current-trailer.html',
+      	type: 'GET',
+      	async: true,
+      	dataType: 'html',
+      	success: function(result){
+      		$('.container').css({'top': '100px;'});
+      		$('.container').empty();
+        	$(".container").html(result);
+        	
+      	}
+   	});
+}	
+
+$(document).on('click', 'div.movie-box', function() {
+	$('.container').empty()
+	$(window).scrollTop(0);
+	var get_movieKey = $(this).attr("data");
+	var get_movieID = $(this).attr('movieId');
+	getHTML2(get_movieKey)
+	test(get_movieID);
+	test2(get_movieID);
+
+	
+})
+
+$(document).on('click', '.trailer-button', function() {
+	var key = $(this).html();
+	$('iframe').attr('src', 'https://www.youtube.com/embed/' + key);
+})
 
 
 var z = 0;
@@ -132,7 +135,6 @@ $(document).on('click', '.right-arrow1',function() {
 
 $(document).on('click', 'div.movie-box', function() {
 	
-	$('.container').addClass('container-active ')
 })
 
 $(document).on('click', '.back', function() {
