@@ -77,6 +77,22 @@ function test2(id) {
     });
 }
 
+function recommended(id) {
+	$.ajax({
+        url: 'https://api.themoviedb.org/3/movie/'+id+'/recommendations?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&page=1',
+        async: true,
+        success: function(data) {
+        	var resultsLength = data.results.length;
+        	for(var i = 0; i < resultsLength; i++) {
+        		var resultsShort	= data.results[i];
+        		var movieId 		= resultsShort.id;
+        		var poster 			=resultsShort.poster_path;
+				$('.movie-section').append('<div class="recommended-box" movieId="'+movieId+'" style="background-image: url(https://image.tmdb.org/t/p/w500/'+poster+')">q</div>')
+			}
+        }
+    });
+}
+
 function getHTML2(movieKey) {
 	$.ajax({
       	url: 'current-trailer.html',
@@ -100,7 +116,7 @@ $(document).on('click', 'div.movie-box', function() {
 	getHTML2(get_movieKey)
 	test(get_movieID);
 	test2(get_movieID);
-
+	recommended(get_movieID)
 	
 })
 
@@ -143,6 +159,14 @@ $(document).on('click', '.back', function() {
 	$('.container').removeClass('container-active ')
 })
 
+
+$(document).on('mouseenter', 'div.movie-box', function() {
+	
+})
+
+$(document).on('mouseleave', 'div.movie-box', function() {
+   
+});
 
 
 function getHTML() {
