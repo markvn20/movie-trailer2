@@ -118,12 +118,11 @@ main {
 
 .main-all {
 	position: relative;
+	overflow: hidden;
 }
 
 .main-trailer-detail {
-	position: absolute;
-	bottom: -100%;
-	left: 0;
+	display: none;
 	width: 100%;
 	height: 500px;
 	background: #333;
@@ -248,4 +247,13 @@ main {
 	padding: 45% 0 0;
 	float: left;
 	width: 33.333%;
+}
+
+.show-details {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 777;
+	background: white;
+	padding: 20px;
 }

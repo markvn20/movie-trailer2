@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 
 var arrayData2 = [];
-function apiCall(api, api2, arg) {
+function getCategory(api, api2, arg) {
 	var please;
 	$.ajax({
         url: 'https://api.themoviedb.org/3/movie/'+api+'?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&page=1',
@@ -27,7 +27,7 @@ function apiCall(api, api2, arg) {
 				};
 
 				var okay = data.results[i].id;
-				$('.' + api2).append('<div class="movie-box" okay="'+i+'" style="background-image: url(https://image.tmdb.org/t/p/w500/'+image+')" movieId="'+movieId+'"></div>')
+				$('.' + api2).append('<div class="movie-box" okay="'+i+'" style="background-image: url(https://image.tmdb.org/t/p/w500/'+image+')" movieId="'+movieId+'"><span class="show-details">show more</span></div>')
 			
 			}
 
@@ -42,7 +42,7 @@ function apiCall(api, api2, arg) {
    
 }
 
-function test(par1) {
+function fullDetails(par1) {
  	$.ajax({
         url: 'https://api.themoviedb.org/3/movie/'+par1+'?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&page=1',
         async: true,
@@ -53,7 +53,7 @@ function test(par1) {
     });
 }
  
-function test2(id) {
+function getVideo(id) {
  	$.ajax({
         url: 'https://api.themoviedb.org/3/movie/'+id+'/videos?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US',
         async: true,
@@ -93,34 +93,28 @@ function recommended(id) {
     });
 }
 
-function getHTML2(movieKey) {
-	$.ajax({
-      	url: 'current-trailer.html',
-      	type: 'GET',
-      	async: true,
-      	dataType: 'html',
-      	success: function(result){
-      		$('.container').css({'top': '100px;'});
-      		$('.container').empty();
-        	$(".container").html(result);
-        	
-      	}
-   	});
-}	
+	
 
-$(document).on('click', 'div.movie-box', function() {
+$('.container').on('click', 'div.movie-box', function(event) {
+	event.stopPropagation();
 	$('.container').empty()
 	$(window).scrollTop(0);
 	var get_movieKey = $(this).attr("data");
 	var get_movieID = $(this).attr('movieId');
-	getHTML2(get_movieKey)
-	test(get_movieID);
-	test2(get_movieID);
+	getTrailer(get_movieKey)
+	fullDetails(get_movieID);
+	getVideo(get_movieID);
 	recommended(get_movieID)
 	
 })
 
-$(document).on('click', '.trailer-button', function() {
+$('.container').on('click', '.show-details', function(event) {
+	event.stopPropagation();
+	$('.main-trailer-detail').show();
+	
+})
+
+$('.container').on('click', '.trailer-button', function() {
 	var key = $(this).html();
 	$('iframe').attr('src', 'https://www.youtube.com/embed/' + key);
 })
@@ -149,13 +143,10 @@ $(document).on('click', '.right-arrow1',function() {
 
 })
 
-$(document).on('click', 'div.movie-box', function() {
-	
-})
 
 $(document).on('click', '.back', function() {
 	$('.container').empty()
-	getHTML3()
+	getMain()
 	$('.container').removeClass('container-active ')
 })
 
@@ -169,7 +160,23 @@ $(document).on('mouseleave', 'div.movie-box', function() {
 });
 
 
-function getHTML() {
+function getTrailer(movieKey) {
+	$.ajax({
+      	url: 'current-trailer.html',
+      	type: 'GET',
+      	async: true,
+      	dataType: 'html',
+      	success: function(result){
+      		$('.container').css({'top': '100px;'});
+      		$('.container').empty();
+        	$(".container").html(result);
+        	
+      	}
+   	});
+}
+
+
+function getMain2() {
 	$.ajax({
       	url: 'main.html',
       	type: 'GET',
@@ -183,7 +190,8 @@ function getHTML() {
 
 }
 
-function getHTML3() {
+
+function getMain() {
 	$.ajax({
       	url: 'main.html',
       	type: 'GET',
@@ -191,15 +199,15 @@ function getHTML3() {
       	dataType: 'html',
       	success: function(result){
         	$(".container").html(result);
-        	apiCall('now_playing', 'slider-container1')
-			apiCall('popular', 'slider-container2' )
-			apiCall('top_rated', 'slider-container3')
-			apiCall('upcoming', 'slider-container4', '.section1')
+        	getCategory('now_playing', 'slider-container1')
+			getCategory('popular', 'slider-container2' )
+			getCategory('top_rated', 'slider-container3')
+			getCategory('upcoming', 'slider-container4', '.section1')
       	}
    	});
 
 }
-getHTML3()
+getMain()
 
   
 $(document).on('scroll', function() {
