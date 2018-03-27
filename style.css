@@ -18,7 +18,10 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
     font-family: 'Montserrat', sans-serif;
+  	font-size: 1vmin;
+  	font-size: 1vmax;
 }
+
 
 html, body {
 	height: 100%;
@@ -121,12 +124,231 @@ main {
 	overflow: hidden;
 }
 
-.main-trailer-detail {
-	display: none;
+
+/*		main-trailer		*/
+.main-trailer-container {
+	transition: all .17s linear;
+	position: relative;
 	width: 100%;
-	height: 500px;
 	background: #333;
 	clear: both;
+	background-size: 100% 145%;
+	background-position: 100%;
+	opacity: 0;
+}
+
+.show-details-active {
+	opacity: 1;
+	padding: 32% 0 0;
+}
+
+.exit {
+	position: absolute;
+	top: 3%;
+	right: 1%;
+	font-size: 2em;
+	z-index: 3;
+	background-image: url(icon/exit.png);
+	height: 30px;
+	width: 30px;
+	background-size: 100%;
+}
+
+.side-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 30%;
+	background: black;
+}
+
+.side-overlay:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: -200px;
+	background: linear-gradient(90deg, black, transparent);
+	height: 100%;
+	width: 200px;
+	z-index: 2;
+}
+
+.side-overlay2 {
+	padding: 32% 0 0;
+	background-size: 100% 145%;
+	background-position: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 70%;
+}
+
+.trailer-overlay {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, .8);
+	display: none;
+}
+
+.trailer-header {
+	color: white;
+	position: relative;
+	height: 20%;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 3% 0;
+}
+
+.trailer-header .title {
+	font-size: 2.3em;
+	font-weight: bolder;
+}
+
+.trailer-header .tagline {
+	font-size: 1.3em;
+}
+
+.trailer-body {
+	height: 80%;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 3% 0;
+}
+
+.trailer-overview {
+	position: absolute;
+	top: 9em;
+}
+
+.rating-year {
+	margin-bottom: 1em;
+}
+
+.release-date, .released, .language {
+	color: white;
+}
+
+.synopsis {
+	width: 42%;
+	color: white;
+}
+
+.play-trailer {
+	color: white;
+	display: inline-block;
+	position: relative;
+	background: #d81616;
+	padding: .6em 1.2em .8em 1.2em;
+	margin: 1em 0;
+}
+
+.play-icon {
+	position: relative;
+	margin-right: .5em;
+}
+
+.play-icon img {
+	vertical-align: middle;
+	max-width: 20px;
+}
+
+.play {
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+.genre-production {
+	color: white;
+}
+
+.trailer-video {
+
+}
+
+.trailer-video .more-videos {
+	padding: 15% 0 0;
+	background-size: 180% 180%;
+	background-position: 50% 50%;
+	float: left;
+	width: 16.6%;
+	position: relative;
+	top: 2em;
+}
+
+
+
+.main-trailer-detail-width {
+	position: absolute;
+	top: 0;
+	left: 5%;
+	bottom: 0;
+	right: 0;
+	width: 90%;
+	height: 100%;
+	z-index: 3;
+}
+
+.menu {
+	transform: translate(-50%, 0);
+	position: absolute;
+	left: 50%;
+	right: 0;
+	bottom: 0;
+	color: white;
+}
+
+.menu:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 3px;
+	width: 33.333%;
+	background: red;
+}
+
+.menu {
+	    z-index: 2;
+}
+
+.menu li {
+	list-style: none;
+	float: left;
+	padding: 2% 10%;
+	width: 13.33333%;
+	text-align: center;
+	font-weight: bold;
+	z-index: 2;
+}
+
+.menu li:hover {
+	background: #333;
+}
+
+.show-details {
+	transition: all .2s linear;
+	transform: translate(-50%, 0);
+	position: absolute;
+	bottom: 6%;
+	left: 50%;
+	z-index: 2;
+	opacity: 0;
+}
+
+.movie-box:hover .show-details {
+	bottom: 3%;
+	z-index: 2;
+	opacity: 1;
+}
+
+.show-details img {
+	width: 80px;
 }
 
 .main-width {
@@ -163,10 +385,9 @@ main {
 
 .movie-box2 {
 	background-size: 100% 100%;
-	
 }
 
-.main-all h1 {
+.main-all .main-title {
 	position: absolute;
 	left: 0;
 	bottom: 0;
@@ -215,7 +436,7 @@ main {
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 77;
+	z-index: 2;
 
 }
 
@@ -235,11 +456,11 @@ main {
     width: 100%;
 }
 
+/*		section		*/
+
 .movie-section {
-	float: left;
 	width: 30%;
-	height: calc(100%);
-	background: #111;
+	float: left;
 }
 
 .recommended-box {
@@ -249,11 +470,6 @@ main {
 	width: 33.333%;
 }
 
-.show-details {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	z-index: 777;
-	background: white;
-	padding: 20px;
-}
+
+
+
