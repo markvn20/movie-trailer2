@@ -169,6 +169,14 @@ $('.container').on('click', 'div.movie-box', function(event) {
 	recommended(get_movieID)
 })
 
+$('.container').on('click', '.recommended-box', function(event) {
+	event.stopPropagation();
+	var movieId = $(this).attr('movieid');
+	getVideo(movieId)
+ 	recommended(movieId) 
+ 	$('.movie-section').empty();
+})
+
 
 $('.container').on('click', '.show-details', function(event) {
 	event.stopPropagation();

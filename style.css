@@ -127,8 +127,10 @@ main {
 
 /*		main-trailer		*/
 .main-trailer-container {
+	display: none;
 	transition: all .17s linear;
 	position: relative;
+	padding: 32% 0 0;
 	width: 100%;
 	background: #333;
 	clear: both;
@@ -139,7 +141,7 @@ main {
 
 .show-details-active {
 	opacity: 1;
-	padding: 32% 0 0;
+	display: block;
 }
 
 .exit {
@@ -436,7 +438,8 @@ main {
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 2;
+	z-index: 10;
+	color: white;
 
 }
 
