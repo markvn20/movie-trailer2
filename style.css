@@ -68,12 +68,69 @@ nav ul li {
 }
 
 .search-container {
+	position: relative;
+	top: 15px;
 	width: 30%;
 }
 
 .search-button {
 	color: white;
 	display: inline;
+}
+
+
+.submit-button {
+	transition: all .2s ease-in-out;
+	float: left;
+	width: 50px;
+	height: 50px;
+	
+}
+
+.submit-button:hover {
+	
+}
+
+.submit-button:hover .submit {
+	transform: scale(1.2);
+}
+
+.submit {
+	transition: all .1s ease-in-out;
+	position: relative;
+	top: 8px;
+	left: 8px;
+	height: 35px;
+	width: 35px;
+}
+
+.glass {
+	position: relative;
+	border-radius: 50px/50px;
+	border: solid 5px white;
+	width: 18px;
+	height: 18px;   
+}
+
+.glass:before {
+	content: '';
+	position: absolute;
+	width: 5px;
+	height: 15px;
+	background: white;
+	right: -7px;
+	bottom: -12px;
+	transform: rotate(-45deg);
+}
+
+.input {
+	transition: all .2s ease-in-out;
+	background-color: rgba(255, 255, 255, .2);
+	padding: 14px;
+	font-size: 18px;
+	border: none;
+	color: white;
+	float: left
 }
 
 /*			Container			*/
@@ -155,6 +212,7 @@ main {
 }
 
 .exit {
+	cursor: pointer;
 	position: absolute;
 	top: 3%;
 	right: 1%;
@@ -343,23 +401,26 @@ main {
 }
 
 .show-details {
+	cursor: pointer;
 	transition: all .2s linear;
 	transform: translate(-50%, 0);
 	position: absolute;
-	bottom: 6%;
+	bottom: 10%;
 	left: 50%;
 	z-index: 2;
 	opacity: 0;
+	padding: 1.2em;
 }
 
+
 .movie-box:hover .show-details {
-	bottom: 3%;
+	bottom: 7%;
 	z-index: 2;
 	opacity: 1;
 }
 
 .show-details img {
-	width: 80px;
+	width: 100px;
 }
 
 .main-width {
@@ -379,7 +440,8 @@ main {
 .main-all .movie-box {
 	transition: all .2s linear;
 	display: inline-block;
-	width: 20%;
+	width: 19.4%;
+	margin-right: .6%;
 	overflow: hidden;
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
@@ -387,6 +449,43 @@ main {
 	background-size: 100% 100%;
 	padding: 30% 0 0;
 	position: relative;
+}
+
+.movie-box:hover .play-circle {
+	opacity: 1;
+	
+}
+
+.play-circle {
+	transition: all .4s ease-in-out;
+	transform: translate(-50%, -50%);
+    background-color: rgba(2, 166, 255, 0.7);
+    border: 3px solid white;    
+    height: 100px;
+ 	width: 100px;
+    border-radius: 50%;
+    -moz-border-radius :50%;
+    -webkit-border-radius: 50%;
+   	position: absolute;
+   	top: 50%;
+   	left: 50%;
+   	opacity: 0;
+   	cursor: pointer;
+}
+
+.play-circle:hover {
+
+	transition: all .2s ease-in-out;
+	background-color: rgba(254, 52, 52, .7);
+	
+
+}
+
+.play-circle img {
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 50%;
+	left: 52%;
 }
 
 .section1 .movie-box, .section2 .movie-box,.section3 .movie-box {
@@ -497,5 +596,5 @@ main {
 	float: left;
 	width: 19%;
 	background-size: 100% 100%;
-	padding: 30% 0 0;
+	padding: 24% 0 0;
 }

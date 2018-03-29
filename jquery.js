@@ -21,6 +21,7 @@ function getCategory(api, api2, arg, arg2) {
 			for(var i = 0; i < resultsLength; i++) {
 				var resultsShort 	= data.results[i];
 				var image 			= resultsShort.poster_path;
+				var wideImage 		= resultsShort.backdrop_path;
 				var movieId 		= resultsShort.id;
 				please = data.results[i].id;
 				someObject = {
@@ -29,7 +30,7 @@ function getCategory(api, api2, arg, arg2) {
 				};
 
 				var okay = data.results[i].id;
-				$('.' + api2).append('<div class="movie-box" details="main-trailer-container'+arg2+'" okay="'+i+'" style="background-image: url(https://image.tmdb.org/t/p/w500/'+image+')" movieId="'+movieId+'"><span class="show-details" main-trailer-container=".main-trailer-container'+arg2+'"><img src="icon/down-arrow.png"></span></div>')
+				$('.' + api2).append('<div class="movie-box" details="main-trailer-container'+arg2+'" okay="'+i+'" style="background-image: url(https://image.tmdb.org/t/p/w500/'+image+')" movieId="'+movieId+'"><span class="play-circle"><img src="icon/play.png"></span><span class="show-details" main-trailer-container=".main-trailer-container'+arg2+'"><img src="icon/down-arrow.png"></span></div>')
 			
 			}
 
@@ -172,15 +173,27 @@ function searchResults(name) {
     });
 }
 
+function getSearch(par) {
+	$('.container').addClass('container-active-search');
+	$('.container').removeClass('container-active');
+	getSearchResults();
+	searchResults(par)
+}
+
 $('header').on('click', '.search-button', function(event) {
 	event.stopPropagation();
 	var movieName = $('.input').val();
-	$('.container').addClass('container-active-search')
-	getSearchResults();
-	searchResults(movieName)
-	
-
+	getSearch(movieName);
 })
+
+$('.input').keypress(function (e) {
+	var movieName = $('.input').val();
+	var key = e.which;
+	if(key == 13)  // the enter key code
+	{
+		getSearch(movieName);
+	}
+}); 
 
 	
 $('.container').on('click', '.menu li', function(event) {
@@ -242,6 +255,7 @@ $('.container').on('click', '.show-details', function(event) {
 	var movieId 		= $(this).parent().attr('movieId');
 	var detailActive 	= $(this).parent().parent().parent().parent().parent().children('.main-trailer-container');
 	$('.main-trailer-container').removeClass('show-details-active')
+	$('.menu-underline').css({'left': '0'});
 	detailActive.addClass('show-details-active');
 	$('.trailer-menu').hide();
 	$('.trailer-overview').show();
