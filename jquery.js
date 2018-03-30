@@ -9,6 +9,7 @@ function getCategory(api, api2, arg, arg2) {
 	$.ajax({
         url: 'https://api.themoviedb.org/3/movie/'+api+'?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&page=1',
         async: true,
+        cache: false,
         success: function(data) {
             var resultsLength = data.results.length;
 			var someObject;
@@ -57,6 +58,7 @@ function fullDetails(par1, par2, par3) {
  	$.ajax({
         url: 'https://api.themoviedb.org/3/movie/'+par1+'?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&page=1',
         async: true,
+        cache: false,
         success: function (data) {
 	      	var results2Id 		= data;
 	      	var posterWide      = data.backdrop_path;
@@ -112,6 +114,7 @@ function getVideo(id, par1) {
  	$.ajax({
         url: 'https://api.themoviedb.org/3/movie/'+id+'/videos?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US',
         async: true,
+        cache: false,
         success: function(data2) {
         	var resultsKey 		= data2.results.length;
         	var results2Array 	= data2.results;
@@ -129,7 +132,7 @@ function getVideo(id, par1) {
         	
         	for(var i = 0; i < resultsKey; i++) {
         		var movieKey = data2.results[i].key;
-        		$(par1 + ' ' + '.trailer-video').append('<div class="more-videos" style="background-image: url(https://img.youtube.com/vi/'+movieKey+'/sddefault.jpg)"></div>')
+        		$(par1 + ' ' + '.trailer-video').append('<div class="more-videos" movieKey="'+movieKey+'" style="background-image: url(https://img.youtube.com/vi/'+movieKey+'/sddefault.jpg)"></div>')
         	}
         }
     });
@@ -140,6 +143,7 @@ function recommended(id) {
 	$.ajax({
         url: 'https://api.themoviedb.org/3/movie/'+id+'/recommendations?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&page=1',
         async: true,
+        cache: false,
         success: function(data) {
         	var resultsLength = data.results.length;
         	for(var i = 0; i < resultsLength; i++) {
@@ -158,6 +162,7 @@ function searchResults(name) {
 	$.ajax({
         url: 'https://api.themoviedb.org/3/search/movie?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&query='+name+'&page=1&include_adult=false',
         async: true,
+        cache: false,
         success: function(data) {
         	console.log(data)
         	var resultsLength = data.results.length;
@@ -166,8 +171,11 @@ function searchResults(name) {
         		var movieId 		= resultsShort.id;
         		var rating 			= resultsShort.vote_average;
         		var poster 			= resultsShort.poster_path;
-
-        		$('.result-main').append('<div class="result-box" movieId="'+movieId+'" style="background-image: url(https://image.tmdb.org/t/p/w500/'+poster+')">q</div>')
+        		var z = 'https://image.tmdb.org/t/p/w500/'+poster+'';
+        		if(poster == null) {
+        			z = 'icon/no-image.png';
+        		}
+        		$('.result-main').append('<div class="result-box" movieId="'+movieId+'" style="background-image: url('+z+')"></div>')
 			}
         }
     });
@@ -194,6 +202,19 @@ $('.input').keypress(function (e) {
 		getSearch(movieName);
 	}
 }); 
+
+
+$('.container').on('click', '.result-box', function(event) {
+	event.stopPropagation();
+	$('.container').addClass('container-active');
+	$(window).scrollTop(0);
+	var get_movieKey = $(this).attr("data");
+	var get_movieID = $(this).attr('movieId');
+	
+ 	$.when(getTrailer(get_movieKey)).then(fullDetails(get_movieID),
+	getVideo(get_movieID),
+	recommended(get_movieID));
+})
 
 	
 $('.container').on('click', '.menu li', function(event) {
@@ -226,15 +247,14 @@ $('.container').on('click', '.menu li', function(event) {
 
 $('.container').on('click', 'div.movie-box', function(event) {
 	event.stopPropagation();
-	$('.container').empty();
 	$('.container').addClass('container-active');
 	$(window).scrollTop(0);
 	var get_movieKey = $(this).attr("data");
 	var get_movieID = $(this).attr('movieId');
-	getTrailer(get_movieKey)
-	fullDetails(get_movieID);
-	getVideo(get_movieID);
-	recommended(get_movieID)
+	
+ 	$.when(getTrailer(get_movieKey)).then(fullDetails(get_movieID),
+	getVideo(get_movieID),
+	recommended(get_movieID));
 })
 
 $('.container').on('click', '.recommended-box', function(event) {
@@ -299,7 +319,6 @@ $(document).on('click', '.right-arrow1',function() {
 
 
 $(document).on('click', '.back', function() {
-	$('.container').empty();
 	$('.container').removeClass('container-active');
 	$('.container').removeClass('container-active-search')
 	getMain()
@@ -309,12 +328,12 @@ $(document).on('click', '.back', function() {
 function getTrailer(movieKey) {
 	$.ajax({
       	url: 'current-trailer.html',
+      	cache: false,
       	type: 'GET',
       	async: true,
       	dataType: 'html',
       	success: function(result){
       		$('.container').css({'top': '100px;'});
-      		$('.container').empty();
         	$(".container").html(result);
         	
       	}
@@ -327,9 +346,9 @@ function getSearchResults() {
       	url: 'search-result.html',
       	type: 'GET',
       	async: true,
+      	cache: false,
       	dataType: 'html',
       	success: function(result){
-      		$('.container').empty()
         	$(".container").html(result);
       	}
    	});
@@ -342,9 +361,9 @@ function getMain2() {
       	url: 'main.html',
       	type: 'GET',
       	async: true,
+      	cache: false,
       	dataType: 'html',
       	success: function(result){
-      		$('.container').empty()
         	$(".container").html(result);
       	}
    	});
@@ -357,6 +376,7 @@ function getMain() {
       	url: 'main.html',
       	type: 'GET',
       	async: true,
+      	cache: false,
       	dataType: 'html',
       	success: function(result){
         	$(".container").html(result);

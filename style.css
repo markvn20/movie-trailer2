@@ -590,11 +590,18 @@ main {
 .result-main {
 	height: 100%;
 	position: relative;
+	overflow: auto;
+	padding: 0 4%;
 }
 
 .result-box {
 	float: left;
-	width: 19%;
+	width: 19.2%;
 	background-size: 100% 100%;
 	padding: 24% 0 0;
+	margin: 0 1% 1% 0;
+}
+
+.result-box:nth-child(5n+0) {
+   	margin: 0 0% 1% 0;
 }
