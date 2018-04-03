@@ -1,4 +1,5 @@
 //YOU CAN PASS var this = $(this) as a parameter to target that element in a function!
+//call trailer api in section api
 $(document).ready(function() {  
 
 
@@ -13,12 +14,8 @@ function getCategory(api, api2, arg, arg2) {
         success: function(data) {
             var resultsLength = data.results.length;
 			var someObject;
-			
-				var widePoster = data.results[0].backdrop_path;
-				var image 			= data.results[0].poster_path;
-				$(arg).append('<div class="movie-box" style="background-image: url(https://image.tmdb.org/t/p/original/'+widePoster+')" movieId="'+movieId+'"></div>')
-
-		
+			var featuredTrailer = data.results[1].id;
+			$(arg).html('<div class="movie-feature-container"><iframe class="movie-feature" width="560" height="315" data-src="" src="" frameborder="0" allowfullscreen></iframe></div>')
 			for(var i = 0; i < resultsLength; i++) {
 				var resultsShort 	= data.results[i];
 				var image 			= resultsShort.poster_path;
@@ -41,6 +38,26 @@ function getCategory(api, api2, arg, arg2) {
 			var slideAmount 	= Math.floor(movieBoxLength/5);
 			var slidePartial 	= movieBoxLength % 5;
 			console.log(slidePartial)*/
+
+			getMovieFeature(featuredTrailer);
+			function getMovieFeature(id) {
+			 	$.ajax({
+			        url: 'https://api.themoviedb.org/3/movie/'+id+'/videos?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US',
+			        async: true,
+			        cache: false,
+			        success: function(data2) {
+			        	var resultsKey 		= data2.results.length;
+			        	var results2Array 	= data2.results;
+			        	var getTrailer 		= results2Array.filter(function(e) {
+							return e.type == "Trailer";
+						});
+			        	var mainTrailer 	= getTrailer[0].key;
+			        	console.log(mainTrailer)
+						$('.movie-feature').attr('src', 'https://www.youtube.com/embed/' + mainTrailer + '?autoplay=1&rel=0&amp;controls=0&amp;showinfo=0');
+			        
+			        }
+			    });
+			}
 			
         }
     });
@@ -110,7 +127,8 @@ function fullDetails(par1, par2, par3) {
     	}
     });
 }
- 
+
+
 // Get youtube video with key 
 function getVideo(id, par1) {
  	$.ajax({
@@ -160,13 +178,21 @@ function recommended(id) {
 }
 
 // Search movies
-function searchResults(name) {
+function searchResults(name, page) {
 	$.ajax({
-        url: 'https://api.themoviedb.org/3/search/movie?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&query='+name+'&page=1&include_adult=false',
+        url: 'https://api.themoviedb.org/3/search/movie?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&query='+name+'&page='+page+'&include_adult=false',
         async: true,
         cache: false,
         success: function(data) {
-        	console.log(data)
+   			var currentPage = data.page;
+   			var totalResults = data.total_results;
+   			var totalPage	= data.total_pages;
+   			var q = 0;
+   			for(var i = 0; i < 10; i++) {
+   				q++
+   				$('.result-main').append('<div class="page-number" move-name="'+name+'" page-counter="'+q+'">'+q+'</div>')
+   				console.log(q)
+   			}
         	var resultsLength = data.results.length;
         	for(var i = 0; i < resultsLength; i++) {
         		var resultsShort 	= data.results[i];
@@ -183,24 +209,57 @@ function searchResults(name) {
     });
 }
 
+
+function searchResults2(name, page) {
+	$.ajax({
+        url: 'https://api.themoviedb.org/3/search/movie?api_key=ece7966c119923d24c65ccb57a5da71c&language=en-US&query='+name+'&page='+page+'&include_adult=false',
+        async: true,
+        cache: false,
+        success: function(data) {
+   			var currentPage = data.page;
+   			var totalResults = data.total_results;
+   			var totalPage	= data.total_pages;
+   			var q = 0;
+   			console.log(data)
+        	var resultsLength = data.results.length;
+        	for(var i = 0; i < 20; i++) {
+        		var resultsShort 	= data.results[i];
+        		var movieId 		= resultsShort.id;
+        		var rating 			= resultsShort.vote_average;
+        		var poster 			= resultsShort.poster_path;
+        		var z = 'https://image.tmdb.org/t/p/w500/'+poster+'';
+
+        		if(poster == null) {
+        			z = 'icon/no-image.png';
+        		}
+        		$('.result-box').css({'background-image': 'url('+z+')'});
+        		
+			}
+        }
+    });
+}
+
+
 function getSearch(par) {
 	$('.container').addClass('container-active-search');
 	$('.container').removeClass('container-active');
-	$.when(getSearchResults()).done(function () {
-	   searchResults(par)
-	});
+	getSearchResults(par)
+	   
+	
 }
 
+$('.container').on('click', '.page-number', function(event) {
+	event.stopPropagation();
+	var movieName = $(this).attr('movie-name');
+	var pageCounter = $(this).attr('page-counter')
+	searchResults2(movieName, pageCounter);
+
+})
 
 $('header').on('click', 'nav ul li', function(event) {
 	event.stopPropagation();
 	var trailerCategory = $(this).attr('category')
-	$.when(category()).done(function () {
-	    getCategory(trailerCategory, 'category-main');
-	});
-	
-	
-
+	category(trailerCategory)
 })
 
 
@@ -279,20 +338,18 @@ $('.container').on('click', 'div.movie-box', function(event) {
 	$(window).scrollTop(0);
 	var get_movieKey = $(this).attr("data");
 	var get_movieID = $(this).attr('movieId');
-	$.when(getTrailer(get_movieKey)).done(function () {
-	  	fullDetails(get_movieID);
-		getVideo(get_movieID);
-		recommended(get_movieID);
-	});
+	getTrailer(get_movieID)
+	  
+	
 })
 
 $('.container').on('click', '.recommended-box', function(event) {
 	event.stopPropagation();
 	var movieId = $(this).attr('movieid');
-	$.when(getTrailer(get_movieKey)).done(function () {
-	  	fullDetails(get_movieID);
-		getVideo(get_movieID);
-		recommended(get_movieID);
+	$.when(getTrailer(movieId)).done(function () {
+	  	fullDetails(movieId);
+		getVideo(movieId)
+ 	recommended(movieId) 
 	});
 	getVideo(movieId)
  	recommended(movieId) 
@@ -362,7 +419,7 @@ $(document).on('click', '.back', function() {
 	getMain()
 })
 
-function category() {
+function category(category) {
 	$.ajax({
       	url: 'category.html',
       	cache: false,
@@ -373,7 +430,11 @@ function category() {
       		$('.container').css({'top': '100px;'});
         	$(".container").html(result);
         	
-      	}
+      	},
+      	complete: function(result) {
+			getCategory(category, 'category-main');
+	    }
+
    	});
 }
 
@@ -388,13 +449,15 @@ function getTrailer(movieKey) {
       	success: function(result){
       		$('.container').css({'top': '100px;'});
         	$(".container").html(result);
-        	
+        		fullDetails(movieKey);
+		getVideo(movieKey);
+		recommended(movieKey);
       	}
    	});
 }
 
 
-function getSearchResults() {
+function getSearchResults(par) {
 	$.ajax({
       	url: 'search-result.html',
       	type: 'GET',
@@ -403,6 +466,7 @@ function getSearchResults() {
       	dataType: 'html',
       	success: function(result){
         	$(".container").html(result);
+        	searchResults(par)
       	}
    	});
 
@@ -433,7 +497,12 @@ function getMain() {
       	dataType: 'html',
       	success: function(result){
         	$(".container").html(result);
-        	getCategory('now_playing', 'slider-container1', null, '1')
+        	
+			
+
+      	},
+      	complete: function(result) {
+			getCategory('now_playing', 'slider-container1', null, '1')
 			getCategory('popular', 'slider-container2' , null, '2')
 			getCategory('top_rated', 'slider-container3', null, '3')
 			getCategory('upcoming', 'slider-container4', '.section1', '4')
@@ -442,10 +511,10 @@ function getMain() {
 			for (var i = 0; i < sliderLength + 1; i++) {
 				console.log(i)
 				$('.left-arrow' + i +', '+ '.right-arrow' + i).attr('data', '.slider-container' + i);
-			}
-
-      	}
-   	});
+				}
+	    }
+	   	});
+	    
 
 }
 getMain()
@@ -454,7 +523,7 @@ getMain()
 $(document).on('scroll', function() {
     var currentScrollTop = $(this).scrollTop();
    	if(currentScrollTop > 0) {
-   		$('header').addClass('header-fade')
+   		$('header').addClass('header-fade');
    	}
    	else {
    		$('header').removeClass('header-fade')
