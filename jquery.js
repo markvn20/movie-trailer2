@@ -190,7 +190,7 @@ function searchResults(name, page) {
    			var q = 0;
    			for(var i = 0; i < 10; i++) {
    				q++
-   				$('.result-main').append('<div class="page-number" move-name="'+name+'" page-counter="'+q+'">'+q+'</div>')
+   				$('.result-main').append('<div class="page-number" movie-name="'+name+'" page-counter="'+q+'">'+q+'</div>')
    				console.log(q)
    			}
         	var resultsLength = data.results.length;
@@ -203,7 +203,7 @@ function searchResults(name, page) {
         		if(poster == null) {
         			z = 'icon/no-image.png';
         		}
-        		$('.result-main').append('<div class="result-box" movieId="'+movieId+'" style="background-image: url('+z+')"></div>')
+        		$('.result-main').append('<div class="result-box result-box'+i+'" movieId="'+movieId+'" style="background-image: url('+z+')"></div>')
 			}
         }
     });
@@ -232,7 +232,7 @@ function searchResults2(name, page) {
         		if(poster == null) {
         			z = 'icon/no-image.png';
         		}
-        		$('.result-box').css({'background-image': 'url('+z+')'});
+        		$('.result-box'+i+'').css({'background-image': 'url('+z+')'});
         		
 			}
         }
@@ -296,11 +296,7 @@ $('.container').on('click', '.result-box', function(event) {
 	$(window).scrollTop(0);
 	var get_movieKey = $(this).attr("data");
 	var get_movieID = $(this).attr('movieId');
-	$.when(getTrailer(get_movieKey)).done(function () {
-	   fullDetails(get_movieID);
-		getVideo(get_movieID);
-		recommended(get_movieID);
-	});
+	getTrailer(get_movieID)
 })
 
 	
@@ -346,13 +342,7 @@ $('.container').on('click', 'div.movie-box', function(event) {
 $('.container').on('click', '.recommended-box', function(event) {
 	event.stopPropagation();
 	var movieId = $(this).attr('movieid');
-	$.when(getTrailer(movieId)).done(function () {
-	  	fullDetails(movieId);
-		getVideo(movieId)
- 	recommended(movieId) 
-	});
-	getVideo(movieId)
- 	recommended(movieId) 
+	getTrailer(movieId)
  	$('.movie-section').empty();
 })
 
@@ -389,7 +379,7 @@ $('.container').on('click', '.trailer-button', function() {
 
 var z = 0;
 var q = 0;
-$(document).on('click', '.left-all',function() {
+$(document).on('click', '.right-all',function() {
 	var slider = $(this).attr('data');
 	console.log(slider)
 	z++
@@ -402,7 +392,7 @@ $(document).on('click', '.left-all',function() {
 })
 
 
-$(document).on('click', '.right-all',function() {
+$(document).on('click', '.left-all',function() {
 	var slider = $(this).attr('data');
 	console.log(slider)
 	//$('.movie-box').css('transform','translateX(-500%)');
@@ -449,9 +439,9 @@ function getTrailer(movieKey) {
       	success: function(result){
       		$('.container').css({'top': '100px;'});
         	$(".container").html(result);
-        		fullDetails(movieKey);
-		getVideo(movieKey);
-		recommended(movieKey);
+    		fullDetails(movieKey);
+			getVideo(movieKey);
+			recommended(movieKey);
       	}
    	});
 }

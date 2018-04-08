@@ -290,7 +290,7 @@ main {
 }
 
 .side-overlay2 {
-	background-size: 100% 100%;
+	background-size: 100% 110%;
 	background-position: 100%;
 	position: absolute;
 	top: 0;
@@ -628,12 +628,17 @@ main {
 }
 
 .back {
-	position: absolute;
-	top: 0;
+	position: fixed;
+	top: 80px;
 	left: 0;
 	z-index: 10;
 	color: white;
+}
 
+.back img {
+	width: 100%;
+	height: auto;
+	max-width: 30px;
 }
 
 .iframe-container {
@@ -697,6 +702,10 @@ main {
    	margin: 0 0% 1% 0;
 }
 
+
+.page-number {
+	color: white;
+}
 
 
 /*				Category			*/
