@@ -168,7 +168,7 @@ input:focus {
 }
 
 .container-active {
-	overflow: hidden;
+	overflow: auto;
 	height: calc(100% - 80px);
 	top: 80px;
 }
@@ -386,14 +386,14 @@ main {
 }
 
 .trailer-video {
-
+	white-space: nowrap;
 }
 
 .trailer-video .more-videos {
 	padding: 15% 0 0;
 	background-size: 180% 180%;
 	background-position: 50% 50%;
-	float: left;
+	display: inline-block;
 	width: 16.6%;
 	position: relative;
 	top: 2em;
@@ -509,6 +509,15 @@ main {
 	
 }
 
+.movie-box-active {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, .8);
+}
+
 .play-circle {
 	transition: all .4s ease-in-out;
 	transform: translate(-50%, -50%);
@@ -585,6 +594,7 @@ main {
 	height: 100%;
 	position: absolute;
 	width: 6%;
+	cursor: pointer;
 }
 
 .left-all img, .right-all img {
@@ -628,17 +638,12 @@ main {
 }
 
 .back {
-	position: fixed;
-	top: 80px;
+	position: absolute;
+	top: 0;
 	left: 0;
 	z-index: 10;
 	color: white;
-}
 
-.back img {
-	width: 100%;
-	height: auto;
-	max-width: 30px;
 }
 
 .iframe-container {
@@ -702,10 +707,41 @@ main {
    	margin: 0 0% 1% 0;
 }
 
+.result-container {
+	clear: both;
+}
+
+.page-number-container {
+	width: 500px;
+	background: #456;
+	margin: 0 auto;
+}
 
 .page-number {
 	color: white;
+	float: left;
+	display: inline;
+	background: #444;
+	padding: 10px;
+
 }
+
+.page-number:hover {
+	cursor: pointer;
+	background: #222;
+}
+
+.first-prev, .last-next {
+	float: left;
+	width: 85px;
+	color: white;
+}
+
+
+.first-page, .prev-page, .last-page, .next-page {
+	float: left;
+}
+
 
 
 /*				Category			*/

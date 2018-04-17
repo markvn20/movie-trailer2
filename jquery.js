@@ -28,12 +28,12 @@ function getCategory(api, api2, arg, arg2) {
 				};
 
 				var okay = data.results[i].id;
-				$('.' + api2).append('<div class="movie-box" details="main-trailer-container'+arg2+'" okay="'+i+'" style="background-image: url(https://image.tmdb.org/t/p/w500/'+image+')" movieId="'+movieId+'"><span class="play-circle"><img src="icon/play.png"></span><span class="show-details" main-trailer-container=".main-trailer-container'+arg2+'"><img src="icon/down-arrow.png"></span></div>')
+				$('.' + api2).append('<div class="movie-box" details="main-trailer-container'+arg2+'" okay="'+i+'" style="background-image: url(https://image.tmdb.org/t/p/w500/'+image+')" movieId="'+movieId+'"><div class="movie-box-active"></div><span class="play-circle"><img src="icon/play.png"></span><span class="show-details" main-trailer-container=".main-trailer-container'+arg2+'"><img src="icon/down-arrow.png"></span></div>')
 			
 			}
 
 			$('.category-main .movie-box .show-details').remove();
-			
+			$('.movie-box-active').hide();
 			/*var movieBoxLength	= $('.main-1 .movie-box').length;
 			var slideAmount 	= Math.floor(movieBoxLength/5);
 			var slidePartial 	= movieBoxLength % 5;
@@ -188,9 +188,13 @@ function searchResults(name, page) {
    			var totalResults = data.total_results;
    			var totalPage	= data.total_pages;
    			var q = 0;
-   			for(var i = 0; i < 10; i++) {
+   			var standardPage = 10;
+   			if(totalPage < 10) {
+   				standardPage = totalPage;
+   			}
+   			for(var i = 0; i < standardPage; i++) {
    				q++
-   				$('.result-main').append('<div class="page-number" movie-name="'+name+'" page-counter="'+q+'">'+q+'</div>')
+   				$('.page-number-container').append('<div class="page-number" movie-name="'+name+'" page-counter="'+q+'">'+q+'</div>')
    				console.log(q)
    			}
         	var resultsLength = data.results.length;
@@ -203,8 +207,9 @@ function searchResults(name, page) {
         		if(poster == null) {
         			z = 'icon/no-image.png';
         		}
-        		$('.result-main').append('<div class="result-box result-box'+i+'" movieId="'+movieId+'" style="background-image: url('+z+')"></div>')
+        		$('.result-container').append('<div class="result-box'+i+' result-box" movieId="'+movieId+'" style="background-image: url('+z+')"></div>')
 			}
+			$('.last-next').insertAfter($('.page-number:last-child'))
         }
     });
 }
@@ -258,8 +263,9 @@ $('.container').on('click', '.page-number', function(event) {
 
 $('header').on('click', 'nav ul li', function(event) {
 	event.stopPropagation();
-	var trailerCategory = $(this).attr('category')
+	var trailerCategory = $(this).attr('category');
 	category(trailerCategory)
+	$('.container').addClass('container-active');
 })
 
 
@@ -355,6 +361,14 @@ $('.container').on('click', '.show-details', function(event) {
 	var trailerBox 		= $(this).attr('main-trailer-container');
 	var movieId 		= $(this).parent().attr('movieId');
 	var detailActive 	= $(this).parent().parent().parent().parent().parent().children('.main-trailer-container');
+	$('.movie-box-active').fadeOut(200);
+	$(this).siblings('.movie-box-active').fadeIn(200);
+	$('.movie-box-active').addClass('active');
+	$(this).siblings('.movie-box-active').removeClass('active');
+	if($('.movie-box-active').hasClass('active')) {
+		$(this).on('click', '.show-details', function(event) {return false})
+	}
+
 	$('.main-trailer-container').removeClass('show-details-active')
 	$('.menu-underline').css({'left': '0'});
 	detailActive.addClass('show-details-active');
@@ -362,6 +376,7 @@ $('.container').on('click', '.show-details', function(event) {
 	$('.trailer-overview').show();
 	fullDetails(movieId, current, trailerBox);
 	getVideo(movieId, trailerBox);
+
 })
 
 $('.container').on('click', '.exit', function(event) {
@@ -369,6 +384,7 @@ $('.container').on('click', '.exit', function(event) {
 	$('.main-trailer-container').removeClass('show-details-active');
 	$('.side-overlay2').css({'background-image': 'none'})
 	$('.trailer-overlay').hide();
+	$('.movie-box-active').hide();
 })
 
 $('.container').on('click', '.trailer-button', function() {
@@ -384,7 +400,7 @@ $(document).on('click', '.right-all',function() {
 	console.log(slider)
 	z++
 	q += 500;
-	//$(slider + ' ' + '.movie-box').css('transform','translateX(-500%)');
+	$(slider + ' ' + '.movie-box').css('left','-100%');
 	$(slider + ' ' + '.movie-box:last-child').after($(slider + ' ' + '.movie-box:first-child'))
 	$(slider + ' ' + '.movie-box:last-child').after($(slider + ' ' + '.movie-box:nth-child(1), '+slider+' .movie-box:nth-child(2), '+slider+' .movie-box:nth-child(3), '+slider+' .movie-box:nth-child(4)'))
 	
@@ -395,7 +411,7 @@ $(document).on('click', '.right-all',function() {
 $(document).on('click', '.left-all',function() {
 	var slider = $(this).attr('data');
 	console.log(slider)
-	//$('.movie-box').css('transform','translateX(-500%)');
+	$(slider + ' ' + '.movie-box').css('transform','translateX(-500%)');
 	$(slider + ' ' + '.movie-box:first-child').before($(slider + ' ' + '.movie-box:last-child'))
 	$(slider + ' ' + '.movie-box:first-child').before($(slider + ' ' + '.movie-box:nth-child(20), '+slider+' .movie-box:nth-child(19), '+slider+' .movie-box:nth-child(18), '+slider+' .movie-box:nth-child(17)'))
 
